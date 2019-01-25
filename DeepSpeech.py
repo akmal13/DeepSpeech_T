@@ -935,7 +935,7 @@ def do_single_file_inference(input_file_path):
                 itan = -1
                 
         print('Banyak karakter pada Tulisan : '+str(nanta))
-
+        #print(kartekmod)
         nilai = 99
 
         for i in range (nanta+1):
@@ -952,7 +952,7 @@ def do_single_file_inference(input_file_path):
                     kartekmod[i][j] = 99
                 manana = math.floor(len(kartekmod[i])/2)
                 kartekmod[i][manana] = nilai
-
+        #print(kartekmod)
         pembanding = [0]
         
 
@@ -962,26 +962,30 @@ def do_single_file_inference(input_file_path):
 
         del pembanding[0]   
         print('Panjang Dari Suara : ' + str(len(pembanding)))
-
+        #print(kartekmod)
         #print(pembanding)
         lenstring = len(stringtran)
-        makan = 0
-        muncul = [99 for _ in range (lenstring)]
-        kanta = 0
+        muncul = [0 for _ in range (lenstring)]
         counter = 0
-        ##print('Sampe sini')####
-        for i in range (len(stringtran)):
-            makan = 0
-            while makan == 0 :
-                counter = counter +1
-                if(stringtran[i] == pembanding[kanta]):
-                    muncul[i] = counter
-                    del pembanding [:(kanta+1)]
-                    kanta = 0
-                    makan = 1
-                else:
-                    kanta = kanta+1
-                
+        #print(str(len(stringtran)))
+        #print(str(len(pembanding)))
+        
+        mamama = len(pembanding)
+        loop = 0
+        for i in range (0,len(stringtran)):
+            while loop < mamama:
+                if(stringtran[i] == pembanding[loop]):
+                   if i != 0 :  
+                        muncul[i] = loop+muncul[i-1]
+                   else :
+                       muncul[i] = loop
+                   del pembanding [:loop]
+                   mamama = len(pembanding)
+                   loop = 0
+                   break
+                counter = counter + 1
+                loop = loop+1
+
         #print(str(len(stringtran)))
         #print(muncul)
 
@@ -995,9 +999,42 @@ def do_single_file_inference(input_file_path):
 
 
         for i in range (len(stringtran)):
-            nilaii = float(muncul[i])
-            nilak = nilaii * waktu / panjang
-            print('Waktu karakter '+str(i+1)+' dengan karakter '+str(stringhas[i])+' adalah : '+ str(nilak))
+            if(stringhas[i] != ' '):
+                nilaii = float(muncul[i])
+                nilak = nilaii * waktu / panjang
+                print('Waktu karakter '+str(i+1)+' dengan karakter '+str(stringhas[i])+' adalah : '+ str(nilak))
+            else:
+                print('')
+            
+
+        print(' ')
+        print(' ')
+
+        kata = 0
+        katama = []
+
+        panpama = [0 for _ in range (len(stringhas))]
+        for i in range (len(stringhas)):
+            panpama[i] = stringhas[i]
+        
+        panpama.append(' ')
+        sebelum = 0
+        str1 = ''
+        for i in range (len(panpama)):
+            if panpama[i] == ' ':
+                kata = kata + 1
+                nilaii = float(muncul[i-1])
+                nilam = float(muncul[sebelum])
+                nilak = ((nilaii+nilam)/2) * waktu / panjang
+                for j in range (sebelum,i):
+                    katama.append(panpama[j])
+                str1 = ''.join(katama)
+                print('Waktu kata '+str(kata)+' dengan kata "'+str1+'" dengan waktu : '+str(nilak))
+                katama = []
+                str1 = ''
+                sebelum = i+1
+
+    #Betulin Kalo data Besar dan Data Kecil line 977
             
 
 
