@@ -55,6 +55,7 @@ def ctc_beam_search_decoder(probs_seq,
     beam_results = swigwrapper.ctc_beam_search_decoder(
         probs_seq, alphabet.config_file(), beam_size, cutoff_prob, cutoff_top_n,
         scorer)
+    #print(beam_results)
     beam_results = [(res.probability, alphabet.decode(res.tokens)) for res in beam_results]
     return beam_results
 

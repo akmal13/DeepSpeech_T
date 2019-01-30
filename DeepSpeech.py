@@ -898,7 +898,6 @@ def do_single_file_inference(input_file_path):
 
         #print(kartek)   
 
-        ### Hasil kemungkinanya tetep 1024, dan karakter selalu 29 , tapi panjang dari Sound selalu beda jadinya harus periksa yang logitsnya
         ### print(decoded[1023][1])
         stringhas = decoded[0][1]
         print(stringhas)
@@ -997,10 +996,13 @@ def do_single_file_inference(input_file_path):
         print('')
         print('')
 
+        maxi = float(muncul[0])
 
         for i in range (len(stringtran)):
             if(stringhas[i] != ' '):
                 nilaii = float(muncul[i])
+                if maxi < nilaii:
+                    maxi = nilaii
                 nilak = nilaii * waktu / panjang
                 print('Waktu karakter '+str(i+1)+' dengan karakter '+str(stringhas[i])+' adalah : '+ str(nilak))
             else:
@@ -1008,10 +1010,10 @@ def do_single_file_inference(input_file_path):
             
 
         print(' ')
-        print(' ')
 
         kata = 0
         katama = []
+        pampam = 1
 
         panpama = [0 for _ in range (len(stringhas))]
         for i in range (len(stringhas)):
@@ -1024,18 +1026,21 @@ def do_single_file_inference(input_file_path):
             if panpama[i] == ' ':
                 kata = kata + 1
                 nilaii = float(muncul[i-1])
+                while nilaii == 0:
+                    nilaii = float(muncul[i-1-pampam])
+                    pampam = pampam +1
+                pampam = 1
                 nilam = float(muncul[sebelum])
                 nilak = ((nilaii+nilam)/2) * waktu / panjang
                 for j in range (sebelum,i):
                     katama.append(panpama[j])
                 str1 = ''.join(katama)
-                print('Waktu kata '+str(kata)+' dengan kata "'+str1+'" dengan waktu : '+str(nilak))
+                print('\nWaktu kata '+str(kata)+' dengan kata "'+str1+'" dengan \n\nWaktu awal : '+str(nilam*waktu/panjang)+'\nWaktu akhir : '+str(nilaii*waktu/panjang)+'\nWaktu tengah : '+str(nilak)+'\n')
                 katama = []
                 str1 = ''
                 sebelum = i+1
 
-    #Betulin Kalo data Besar dan Data Kecil line 977
-            
+    #kalo cuma satu huruf jangan ditambah menjadi kata (kalo cocok)         
 
 
 
