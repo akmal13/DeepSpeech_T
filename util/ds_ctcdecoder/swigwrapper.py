@@ -152,7 +152,7 @@ class SwigPyIterator(_object):
 
     def __add__(self, n):
         return _swigwrapper.SwigPyIterator___add__(self, n)
-
+    
     def __sub__(self, *args):
         return _swigwrapper.SwigPyIterator___sub__(self, *args)
     def __iter__(self):

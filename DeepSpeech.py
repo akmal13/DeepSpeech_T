@@ -1024,7 +1024,6 @@ def do_single_file_inference(input_file_path):
         str1 = ''
         for i in range (len(panpama)):
             if panpama[i] == ' ':
-                kata = kata + 1
                 nilaii = float(muncul[i-1])
                 while nilaii == 0:
                     nilaii = float(muncul[i-1-pampam])
@@ -1035,12 +1034,15 @@ def do_single_file_inference(input_file_path):
                 for j in range (sebelum,i):
                     katama.append(panpama[j])
                 str1 = ''.join(katama)
-                print('\nWaktu kata '+str(kata)+' dengan kata "'+str1+'" dengan \n\nWaktu awal : '+str(nilam*waktu/panjang)+'\nWaktu akhir : '+str(nilaii*waktu/panjang)+'\nWaktu tengah : '+str(nilak)+'\n')
+                if (i - sebelum) > 1:
+                    #Kata lebih dari satu huruf
+                    kata = kata + 1
+                    print('\nWaktu kata '+str(kata)+' dengan kata " '+str1+' " dengan Waktu:\n\nAwal   : '+str(nilam*waktu/panjang)+'\nAkhir  : '+str(nilaii*waktu/panjang)+'\nTengah : '+str(nilak)+'\n')
                 katama = []
                 str1 = ''
                 sebelum = i+1
 
-    #kalo cuma satu huruf jangan ditambah menjadi kata (kalo cocok)         
+    #Cari cara lain agar dia lebih lancar pas dia language model        
 
 
 
