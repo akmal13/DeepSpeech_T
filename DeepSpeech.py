@@ -885,30 +885,67 @@ def do_single_file_inference(input_file_path):
         panjang = len(logits)
         #print('Karakter : '+ str(karakter))
         #print('Panjang Sound : '+ str(panjang))
-        max_prob = [0 for _ in range(panjang-1)]
-        kartek = [0 for _ in range(panjang-1)]
 
-        for x in range (0,panjang-1):
-            for y in range (0,karakter-1):
-                ##print('nice')
-                if logits[x][y] > max_prob[x] :
-                    max_prob[x] = logits[x][y]
-                    kartek[x] = y
-        
-
-        #print(kartek)   
 
         ### print(decoded[1023][1])
         stringhas = decoded[0][1]
         print(stringhas)
         stringtran = [99 for _ in range((len(stringhas)))]
         alpabet = [' ','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
-        for c in range (0,len(stringhas)):
+        for c in range (0,len(stringhas)):                                                                                                  # Merubah huruf menjadi angka
             for v in range (0,len(alpabet)):
                 if(stringhas[c] == alpabet[v]):
                     stringtran[c] = v
 
-        #print(stringtran)
+        print(stringtran)
+
+
+        max_proba = [0 for _ in range(panjang)]
+        max_prob = [[0]*3 for _ in range(panjang)] # Buat 3
+        kartek = [0 for _ in range(panjang)]
+        makartek = [[0]*3 for _ in range (panjang)]
+
+        for x in range (0,panjang):
+            for y in range (0,karakter):
+                if logits[x][y] > max_proba[x] :
+                    max_proba[x] = logits[x][y]
+                    kartek[x] = y
+        print (kartek)
+        for x in range (0,panjang):
+            for z in range (0,3):
+                for y in range (0,karakter):
+                    if logits [x][y] > max_prob[x][z]:
+                        max_prob[x][z] = logits[x][y]           # Buat 3
+                        makartek[x][z] = y
+                        logits[x][y] = 0
+    
+        #print(makartek)
+        mangsebelum = 0
+        sebelum = 0
+        ketemu = 0
+        print('Panjang-1 : '+ str(panjang-1))
+        for i in range (len(stringtran)):
+            ketemu = 0
+            for j in range (0,panjang):
+                if stringtran[i] == makartek[j][0]:
+                    ketemu = 1
+                    sebelum = j
+                    mangsebelum = j
+                    print('J : '+str(j) + 'Dengan huruf '+str(stringtran[i]))
+                    #break
+
+                if ketemu == 0 and j == panjang-1:
+                    for n in range (len(makartek[0])):
+                        for k in range (sebelum,panjang-1):
+                            print ('PAPAPPAPAPA')
+                            if makartek[k][n] == stringtran[i]:
+                                makartek[k][0] == stringtran[i]
+                    #ketemu = 1
+                    print('LALALLALALALAL')
+                    
+
+        print(makartek)                            
+
 
         penanda = kartek[0]
         kartekmod = [kartek for _ in range(0,len(kartek))]
@@ -998,6 +1035,9 @@ def do_single_file_inference(input_file_path):
 
         maxi = float(muncul[0])
 
+        mankan = [0 for _ in range (len(stringtran))]
+        tambura = 0
+
         for i in range (len(stringtran)):
             if(stringhas[i] != ' '):
                 nilaii = float(muncul[i])
@@ -1005,10 +1045,22 @@ def do_single_file_inference(input_file_path):
                     maxi = nilaii
                 nilak = nilaii * waktu / panjang
                 print('Waktu karakter '+str(i+1)+' dengan karakter '+str(stringhas[i])+' adalah : '+ str(nilak))
+                if nilak == 0:
+                            mankan[tambura] = stringhas[i]
+                            tambura = tambura + 1
             else:
                 print('')
             
+        
+        for i in range (len(alpabet)):
+            for m in range (len(mankan)):
+                if mankan[m] == alpabet[i]:
+                    mankan[m] = i
 
+        while 0 in mankan: mankan.remove(0)
+
+        print(str(mankan))
+        print(stringhas)
         print(' ')
 
         kata = 0
@@ -1038,11 +1090,17 @@ def do_single_file_inference(input_file_path):
                     #Kata lebih dari satu huruf
                     kata = kata + 1
                     print('\nWaktu kata '+str(kata)+' dengan kata " '+str1+' " dengan Waktu:\n\nAwal   : '+str(nilam*waktu/panjang)+'\nAkhir  : '+str(nilaii*waktu/panjang)+'\nTengah : '+str(nilak)+'\n')
+                        
+
                 katama = []
                 str1 = ''
                 sebelum = i+1
 
-    #Cari cara lain agar dia lebih lancar pas dia language model        
+    #Tadinya get 1 sekarang 3 terbesar
+    #setelah itu baru yang paling besar gak papa diubah ke yang 99 ,setelah itu suruh cari 
+    #kalo dia 99 cari yang yang sisanya kalo contoh jakarta jadinya rta 
+    #dan pada pencarian setelah placement dari sebelumnya dan sebelum yang setelahnya, ketemu sekali 
+    #kalo kayak a yang muncul beberapa kali gak papa,cari aja semuanya baik a pertama kedua dan ketiga  
 
 
 
