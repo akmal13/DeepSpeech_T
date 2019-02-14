@@ -893,11 +893,9 @@ def do_single_file_inference(input_file_path):
         for x in range (0,panjang-1):
             for y in range (0,karakter-1):
                 ##print('nice')
-                if logits[x][y] > max_proba[x] :
+                if logits[x][y] > max_proba[x] :                #Kartek 
                     max_proba[x] = logits[x][y]
                     kartek[x] = y
-        
-        # Max 3 Harus di rebuild rebuild
 
         for x in range (0,panjang):
             for z in range (0,3):
@@ -906,13 +904,13 @@ def do_single_file_inference(input_file_path):
                         max_prob[x][z] = logits[x][y]           # Buat 3
                         makartek[x][z] = y
                         logits[x][y] = 0
-        
-        #print(makartek)
-        #print(kartek)   
 
-        ### print(decoded[1023][1])
+
+        #print(kartek)
+        #print(makartek)
+
         stringhas = decoded[0][1]   # String tertinggi
-        print(stringhas)
+        print('\n'+stringhas)
         stringtran = [99 for _ in range((len(stringhas)))]  # Menyimpan angka dari string
         alpabet = [' ','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
         for c in range (0,len(stringhas)):
@@ -920,8 +918,39 @@ def do_single_file_inference(input_file_path):
                 if(stringhas[c] == alpabet[v]):
                     stringtran[c] = v
 
-        print('Stringtran : '+str(stringtran))
+        #print('Stringtran : '+str(stringtran))
 
+        # banding stringtran dengan kartek
+
+        kurang = [99 for _ in range (len(stringtran))]
+        penanda = 0  #Penanda apakah telah muncul pada pencarian
+        lfi = 0
+        for x in range (0,len(stringtran)):
+            for y in range (lfi,len(kartek)):
+                if stringtran[x] == kartek[y]:
+                    #print('Masuk aman :'+ str(stringtran[x]))
+                    lfi = y
+                    break
+                if stringtran != kartek[y] and y == panjang-1:
+                    #print('Masuk dengan :'+str(stringtran[x])+'dan dengan nilai'+str(kartek[y]))    # Masukin kesini
+                    kurang[x] = stringtran[x]
+                    for m in range (lfi+1,len(kartek)):
+                        for n in range (0,3):
+                            #print(str(makartek[m][n])+str(stringtran[x]))
+                            if makartek[m][n] == stringtran[x]:
+                                kartek[m] = stringtran[x]
+                                penanda = 1
+                                #print('Hasil Ubah'+str(kartek[m]))
+                                break
+                        if penanda == 1:
+                            penanda = 0
+                            break
+                    break
+        
+        #print(kartek)
+        #print(kurang)
+           
+        
         penanda = kartek[0]  # penanda awal dari karakter
         kartekmod = [kartek for _ in range(0,len(kartek))]
         #print(len(kartek))
@@ -945,7 +974,7 @@ def do_single_file_inference(input_file_path):
                 del kartek[:itan]
                 itan = -1
                 
-        print('Banyak karakter pada Tulisan : '+str(nanta))
+        print('Banyak karakter pada Tulisan : '+str(len(stringhas)))
         #print(kartekmod)
         nilai = 99
 
@@ -998,8 +1027,10 @@ def do_single_file_inference(input_file_path):
                 loop = loop+1
 
         #print(str(len(stringtran)))
+    
+        for i in range (len(muncul)):
+            muncul[i] = muncul[i] +1
         #print(muncul)
-
         f = sf.SoundFile(input_file_path)   # file yang digunakan
         waktu = format(len(f) / f.samplerate) # Menghitung waktu dari file
         waktu = float(waktu)
@@ -1014,7 +1045,7 @@ def do_single_file_inference(input_file_path):
             if(stringhas[i] != ' '):
                 nilaii = float(muncul[i])
                 if maxi < nilaii:
-                    maxi = nilaii
+                    maxi = nilaii   
                 nilak = nilaii * waktu / panjang
                 print('Waktu karakter '+str(i+1)+' dengan karakter '+str(stringhas[i])+' adalah : '+ str(nilak))
             else:
@@ -1053,11 +1084,7 @@ def do_single_file_inference(input_file_path):
                 katama = []
                 str1 = ''
                 sebelum = i+1
-
-    # Untuk pada kata yang pada kemungkinan lebih masih terdapat kesalahan        
-
-
-
+    
 
 
 def main(_):
